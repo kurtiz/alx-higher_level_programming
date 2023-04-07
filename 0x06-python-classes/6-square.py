@@ -1,72 +1,54 @@
 #!/usr/bin/python3
 """
-square class
+    This file contains the class for a basic square
 """
 
 
 class Square:
+    """Class for a basic square"""
 
     def __init__(self, size=0, position=(0, 0)):
+        """Square initializer"""
         self.size = size
         self.position = position
-    """
-    creates a square object
-    """
+
     @property
     def size(self):
+        """Getter for the square's size"""
         return self.__size
-        """
-        gets size
-        """
+
+    @size.setter
+    def size(self, size):
+        """Setter for the square's size"""
+        if (not isinstance(size, int)):
+            raise TypeError("size must be an integer")
+        if (size < 0):
+            raise ValueError("size must be >= 0")
+        self.__size = size
+
     @property
     def position(self):
+        """Getter for the square's position"""
         return self.__position
-        """
-        gets position
-        """
+
     @position.setter
-    def position(self, value):
-        if(type(value) is not tuple or len(value) is not 2 or
-           type(value[0]) is not int or
-           type(value[1]) is not int):
+    def position(self, value=(0, 0)):
+        """Setter for the square's position"""
+        if (not all(type(x) is int and x >= 0 for x in value) or
+                len(value) is not 2 or type(value) is not tuple):
             raise TypeError("position must be a tuple of 2 positive integers")
-        if(value[0] < 0 or value[1] < 0):
-            raise ValueError("position must be a tuple of 2 positive integers")
         self.__position = value
 
-        """
-        sets position
-        position has to be a tuple of positive integers
-        Raise:
-            ValueError
-            TypeError
-        """
-    @size.setter
-    def size(self, value):
-        if(type(value) is not int):
-            raise TypeError("size must be an integer")
-        elif(value < 0):
-            raise ValueError("size must be >= 0")
-        else:
-            self.__size = value
-        """
-        sets size
-        size has to be an integer and positive
-        """
-
     def area(self):
-        return(self.__size**2)
-        """
-        returns the area of the size of the square
-        """
+        """Returns the area of the square"""
+        return self.__size ** 2
+
     def my_print(self):
-        if(self.size == 0):
-            print()
-            return
-        for x in range(self.position[1]):
-            print()
-        for x in range(self.size):
-            print("{}{}".format(" " * self.position[0], "#" * self.size))
-        """
-        prints a square of hashtags based on position and size
-        """
+        """Prints the square"""
+        if (self.__size == 0):
+            print("")
+        else:
+            for x in range(self.position[1]):
+                print("")
+            for x in range(self.size):
+                print(" " * self.position[0] + "#" * self.size)
