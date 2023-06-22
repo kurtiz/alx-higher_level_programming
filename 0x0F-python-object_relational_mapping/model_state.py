@@ -1,15 +1,20 @@
 #!/usr/bin/python3
-# sql alchemy awesome
+"""defines State class"""
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
 
 class State(Base):
-    # creates state
+    """defines class attributes for State class
+    Args:
+        Base: base class
+    Attributes:
+        id: state id
+        name: state name
+    """
     __tablename__ = 'states'
-
-    id = Column(Integer, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     name = Column(String(128), nullable=False)

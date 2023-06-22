@@ -1,23 +1,34 @@
 #!/usr/bin/python3
-# gets all CITIES
+"""Module lists all cities from the database hbtn_0e_4_usa"""
 
-
-def main(args):
-    # gets all CITY stuff
-    if len(args) != 5:
-        raise Exception("need 4 arguments!")
-    db = MySQLdb.connect(host='localhost',
-                         user=args[1],
-                         passwd=args[2],
-                         db=args[3])
-    cur = db.cursor()
-    cur.execute("SELECT c.name FROM cities\
-            c JOIN states s ON s.id=c.state_id\
-            WHERE s.name=%s ORDER BY c.id", (args[4],))
-    states = cur.fetchall()
-    print(", ".join(map(lambda x: "%s" % x, states)))
 
 if __name__ == "__main__":
-    import sys
     import MySQLdb
-    main(sys.argv)
+    from sys import argv
+
+    # default values user="root", passwd="", db="hbtn_0e_4_usa"
+    db = MySQLdb.connect(host="localhost",
+                         port=3306,
+                         user=argv[1],
+                         passwd=argv[2],
+                         db=argv[3])
+    cur = db.cursor()
+
+    state_lookup = str(argv[4])
+    SQL_query = """SELECT cities.name
+                   FROM cities
+                   LEFT JOIN states
+                   ON cities.state_id = states.id
+                   WHERE states.name=%s
+                   ORDER BY cities.id ASC"""
+    cur.execute(SQL_query, (state_lookup,))
+
+    flag = 0
+    for row in cur.fetchall():
+        if flag == 0:
+            flag = 1
+        else:
+            print(", ", end="")
+        print(row[0], end="")
+    print()
+    db.close()
